@@ -2,9 +2,8 @@ require('dotenv').config();
 
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
-const withTM = require('next-plugin-transpile-modules');
 
-module.exports = withTM({
+module.exports = {
   webpack: config => {
     config.plugins = config.plugins || [];
 
@@ -18,6 +17,5 @@ module.exports = withTM({
     ];
 
     return config;
-  },
-  transpileModules: ['grommet-controls', 'grommet', 'grommet-icons']
-});
+  }
+};
