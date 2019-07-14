@@ -2,17 +2,20 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["react", "prettier"],
+  "plugins": ["react", "@typescript-eslint", "prettier"],
   "env": {
     "browser": true,
-    "jasmine": true,
     "jest": true,
     "node": true
   },
   "rules": {
-    "prettier/prettier": ["error", { "singleQuote": true }]
+    "prettier/prettier": ["error", { "singleQuote": true }],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/camelcase": "off"
   },
   "settings": {
     "react": {
@@ -20,5 +23,5 @@
       "version": "detect"
     }
   },
-  "parser": "babel-eslint"
+  "parser": "@typescript-eslint/parser"
 }
