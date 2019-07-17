@@ -1,10 +1,15 @@
 import React from 'react';
 import { Chart, Tab, Tabs } from 'grommet';
+import { Athlete } from '../db/types';
 
-const ActivityChart = () => {
+interface ActivityChartProps {
+  athlete: Athlete;
+}
+
+const ActivityChart = ({ athlete }: ActivityChartProps): React.ReactElement => {
   return (
     <Tabs>
-      <Tab title="This Week">
+      <Tab title={`${athlete.first_name} This Week`}>
         <Chart
           type="bar"
           round
