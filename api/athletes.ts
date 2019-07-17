@@ -1,13 +1,16 @@
 import { Router } from 'express';
 import { getDB } from '../db/utils';
+import { ensureAuthenticated } from './';
 
 const athletes = Router();
 
-athletes.get('/api/athletes', (_, res): void => {
+athletes.get('/api/athletes/:email', ensureAuthenticated, (req, res): void => {
+  const email = req.params.email;
+
   getDB()
     .collection('athletes')
     .aggregate([
-      { $match: { last_name: 'Baraban' } },
+      { $match: { email } },
       {
         $lookup: {
           from: 'affiliates',
