@@ -1,16 +1,19 @@
 import { combineReducers, createStore, DeepPartial, Store } from 'redux';
-import themeReducer from './theme/reducer';
+import athleteReducer, { initialAthleteState } from './athlete/reducer';
+import themeReducer, { initialThemeState } from './theme/reducer';
+import { AthleteState } from './athlete/types';
 import { ThemeState } from './theme/types';
-import { lightTheme } from '../lib/themes';
 
-const defaultState: DeepPartial<{ theme: ThemeState }> = {
-  theme: {
-    type: 'light',
-    object: lightTheme
-  }
+const defaultState: DeepPartial<{
+  theme: ThemeState;
+  athlete: AthleteState;
+}> = {
+  athlete: initialAthleteState,
+  theme: initialThemeState
 };
 
 const rootReducer = combineReducers({
+  athlete: athleteReducer,
   theme: themeReducer
 });
 
