@@ -1,13 +1,13 @@
 import { SET_DARK, SET_LIGHT, ThemeState, ThemeActionTypes } from './types';
 import { lightTheme } from '../../lib/themes';
 
-const initialState: ThemeState = {
+export const initialThemeState: ThemeState = {
   type: 'light',
   object: lightTheme
 };
 
 const themeReducer = (
-  state: ThemeState = initialState,
+  state: ThemeState = initialThemeState,
   action: ThemeActionTypes
 ): ThemeState => {
   switch (action.type) {
