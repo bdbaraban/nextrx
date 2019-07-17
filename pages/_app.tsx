@@ -3,13 +3,16 @@ import App, { AppProps, Container, AppContext } from 'next/app';
 import Head from 'next/head';
 import { DeepPartial, Store } from 'redux';
 import { Provider } from 'react-redux';
+import fetch from 'isomorphic-unfetch';
 import { Grommet } from 'grommet';
 import { AppState, initializeStore } from '../store';
+import { AthleteState } from '../store/athlete/types';
 import { ThemeState } from '../store/theme/types';
 
 interface AppWithReduxProps {
   pageProps: {};
   initialState: {
+    athlete: AthleteState;
     theme: ThemeState;
   };
 }
@@ -39,9 +42,19 @@ class AppWithRedux extends App {
       pageProps = await Component.getInitialProps(ctx);
     }
 
+    let athlete = null;
+    if (ctx.req && ctx.req['session'].passport) {
+      const email = ctx.req['session'].passport.user.email;
+      const res = await fetch(`http://localhost:3000/api/athletes/${email}`);
+      athlete = await res.json();
+    }
+
     return {
       pageProps,
-      initialState: store.getState()
+      initialState: {
+        athlete,
+        theme: store.getState().theme
+      }
     };
   }
 
