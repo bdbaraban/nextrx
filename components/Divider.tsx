@@ -23,35 +23,39 @@ const Divider = ({
 }: DividerProps): React.ReactElement => {
   return (
     <Box fill="horizontal" align="center" justify="center">
-      <Heading textAlign="center" level="4">
-        <span>
+      <Heading
+        textAlign="center"
+        level="4"
+        style={
+          theme.type === 'dark'
+            ? {
+                borderBottom: '2px dotted #666666',
+                lineHeight: 0,
+                minWidth: '85%'
+              }
+            : {
+                borderBottom: '2px dotted #000',
+                lineHeight: 0,
+                minWidth: '85%'
+              }
+        }
+      >
+        <span
+          style={
+            theme.type === 'dark'
+              ? {
+                  background: '#181a1b'
+                }
+              : {
+                  background: '#fff'
+                }
+          }
+        >
           <Emoji label={label} symbol={symbol} />
           {` ${text} `}
           <Emoji label={label} symbol={symbol} />
         </span>
       </Heading>
-      <style jsx>
-        {theme.type === 'dark'
-          ? `
-      h4 {
-        border-bottom: '2px dotted #666666';
-        line-height: 0;
-        min-width: 85%;
-      }
-      span {
-        background: #181a1b;
-      }`
-          : `
-      h4 {
-        border-bottom: '2px dotted black';
-        line-height: 0;
-        min-width: 85%;
-      }
-      span {
-        background: #fff;
-      }
-      `}
-      </style>
     </Box>
   );
 };
