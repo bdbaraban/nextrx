@@ -40,7 +40,7 @@ const LoginForm = (): React.ReactElement => {
     <Form onSubmit={handleSubmit}>
       <FormField
         htmlFor="email"
-        label="Email"
+        label="Email*"
         name="email"
         required={true}
         error={emailError && 'Athlete not found.'}
@@ -48,7 +48,7 @@ const LoginForm = (): React.ReactElement => {
       <FormField
         htmlFor="password"
         type="password"
-        label="Password"
+        label="Password*"
         name="password"
         required={true}
         error={passwordError && 'Incorrect password.'}
