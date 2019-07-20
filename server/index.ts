@@ -1,20 +1,25 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { createServer } from 'http';
+import BodyParser from 'body-parser';
 import next from 'next';
 import session from 'express-session';
 import passport from 'passport';
-import Auth0Strategy from 'passport-auth0';
+import LocalStrategy from 'passport-local';
 import uid from 'uid-safe';
 import { connectClient, closeClient } from '../db/utils';
 import api from '../api';
 import authRoutes from './authRoutes';
+import { login } from './utils';
 
+// Configure Next application
 const app = next({
   dev: process.env.NODE_ENV !== 'production'
 });
+// Configure request handler
 const handle = app.getRequestHandler();
 
-connectClient(process.env.MONGODB, (err): void => {
+// Connect to MongoDB database
+connectClient((err): void => {
   if (err) {
     console.error(err);
     process.exit(1);
@@ -22,37 +27,36 @@ connectClient(process.env.MONGODB, (err): void => {
 
   console.log('*** MongoDB mongoing on nextrx_db. ***');
 
+  // Instantiate Express server
   app
     .prepare()
     .then((): void => {
       const server = express();
 
-      // Add session management to Express
-      const sessionConfig = {
-        secret: uid.sync(18),
-        cookie: {
-          maxAge: 86400 * 1000 // 24 hours in milliseconds
-        },
-        resave: false,
-        saveUninitialized: true
-      };
-      server.use(session(sessionConfig));
+      server.use(BodyParser.json());
 
-      // Configure Auth0 strategy
-      const auth0Strategy = new Auth0Strategy.Strategy(
-        {
-          domain: process.env.AUTH0_DOMAIN,
-          clientID: process.env.AUTH0_CLIENT_ID,
-          clientSecret: process.env.AUTH0_CLIENT_SECRET,
-          callbackURL: process.env.AUTH0_CALLBACK_URL
-        },
-        function(_1, _2, _3, profile, done): void {
-          return done(null, profile);
-        }
+      // Add session management to Express
+      server.use(
+        session({
+          secret: uid.sync(18),
+          cookie: {
+            maxAge: 86400 * 1000 // 24 hours in milliseconds
+          },
+          resave: false,
+          saveUninitialized: true
+        })
       );
 
-      // Configure Passport
-      passport.use(auth0Strategy);
+      // Configure Passport with Auth0 strategy
+      passport.use(
+        new LocalStrategy.Strategy(
+          {
+            usernameField: 'email',
+            passwordField: 'password'
+          },
+          login
+        )
+      );
       passport.serializeUser((user, done): void => done(null, user));
       passport.deserializeUser((user, done): void => done(null, user));
 
@@ -72,13 +76,15 @@ connectClient(process.env.MONGODB, (err): void => {
         next: NextFunction
       ): void => {
         if (!req.isAuthenticated()) {
-          return res.redirect('/login');
+          return res.redirect('/');
         }
         next();
       };
 
-      server.use('/api/athletes/:email', restrictAccess);
+      // Restrict access on athlete profile page
+      server.use('/athlete', restrictAccess);
 
+      // Let Next handle all other requests
       server.get(
         '*',
         (req, res): Promise<void> => {
