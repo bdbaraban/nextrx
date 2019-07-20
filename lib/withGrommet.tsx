@@ -19,9 +19,19 @@ export default (App: NextPage<{}>) => {
 
   return connect(mapStateToProps)(
     ({ theme }: AppWithGrommetProps): React.ReactElement => (
-      <Grommet theme={theme} full>
-        <App />
-      </Grommet>
+      <>
+        <Grommet theme={theme} full>
+          <App />
+        </Grommet>
+        <style jsx global>{`
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+              Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
+              'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+              'Segoe UI Emoji', 'Segoe UI Symbol';
+          }
+        `}</style>
+      </>
     )
   );
 };
