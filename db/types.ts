@@ -44,11 +44,13 @@ export interface Other {
   rx: boolean;
 }
 
+export type Movement = Reps | Time | Load | Other;
+
 export interface Workout {
   _id: string;
   date: string;
   athlete_id: string;
-  movements: (Reps | Time | Load | Other)[];
+  movements: Movement[];
 }
 
 export interface Athlete {
@@ -56,6 +58,7 @@ export interface Athlete {
   first_name: string;
   last_name: string;
   email: string;
+  password: string;
   profile_image_url: string;
   created_at: string;
   last_login: string;
