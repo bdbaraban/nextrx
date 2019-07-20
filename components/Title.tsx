@@ -3,11 +3,21 @@ import Link from 'next/link';
 import { Heading } from 'grommet';
 
 const Title = (): React.ReactElement => (
-  <Link href="/">
+  <>
     <Heading level="3" margin="none">
-      NextRX
+      <Link href="/athlete">
+        <a>NextRX</a>
+      </Link>
     </Heading>
-  </Link>
+    <style jsx>
+      {`
+        a {
+          text-decoration: none;
+          color: #fff;
+        }
+      `}
+    </style>
+  </>
 );
 
 export default Title;
