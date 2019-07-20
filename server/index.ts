@@ -32,7 +32,6 @@ connectClient((err): void => {
     .prepare()
     .then((): void => {
       const server = express();
-
       server.use(BodyParser.json());
 
       // Add session management to Express
@@ -83,6 +82,17 @@ connectClient((err): void => {
 
       // Restrict access on athlete profile page
       server.use('/athlete', restrictAccess);
+
+      // Redirect login page to athlete profile is authenticated
+      server.get(
+        '/',
+        (req, res): Promise<void> => {
+          if (req.isAuthenticated()) {
+            res.redirect('/athlete');
+          }
+          return handle(req, res);
+        }
+      );
 
       // Let Next handle all other requests
       server.get(
