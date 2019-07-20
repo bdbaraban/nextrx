@@ -14,7 +14,6 @@ export const login = (
   password: string,
   done: DoneFunction
 ): void => {
-  console.log('verifying');
   getDB()
     .collection('athletes')
     .aggregate([
