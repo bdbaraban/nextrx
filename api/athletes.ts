@@ -5,6 +5,7 @@ import ensureAuthenticated from './ensureAuthenticated';
 
 const athletes = Router();
 
+// Fetch an athlete with a given ID.
 athletes.get('/api/athletes/:id', ensureAuthenticated, (req, res): void => {
   getDB()
     .collection('athletes')
