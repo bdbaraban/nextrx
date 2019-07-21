@@ -1,15 +1,3 @@
-export interface Affiliate {
-  _id: string;
-  name: string;
-  nickname: string;
-  street: string;
-  city: string;
-  state_or_province: string;
-  postal_code: string;
-  created_at: string;
-  logo_url: string;
-}
-
 export interface Lift {
   _id: string;
   name: string;
@@ -62,6 +50,6 @@ export interface Athlete {
   profile_image_url: string;
   created_at: string;
   last_login: string;
-  affiliate: Affiliate;
+  affiliate: string;
   workouts: Workout[];
 }
