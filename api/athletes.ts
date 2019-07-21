@@ -1,25 +1,15 @@
 import { Router } from 'express';
+import { ObjectID } from 'mongodb';
 import { getDB } from '../db/utils';
-import { ensureAuthenticated } from './';
+import ensureAuthenticated from './ensureAuthenticated';
 
 const athletes = Router();
 
-athletes.get('/api/athletes/:email', ensureAuthenticated, (req, res): void => {
-  const email = req.params.email;
-
+athletes.get('/api/athletes/:id', ensureAuthenticated, (req, res): void => {
   getDB()
     .collection('athletes')
     .aggregate([
-      { $match: { email } },
-      {
-        $lookup: {
-          from: 'affiliates',
-          localField: 'affiliate_id',
-          foreignField: '_id',
-          as: 'affiliate'
-        }
-      },
-      { $unwind: '$affiliate' },
+      { $match: { _id: new ObjectID(req.params.id) } },
       {
         $lookup: {
           from: 'workouts',
@@ -30,8 +20,7 @@ athletes.get('/api/athletes/:email', ensureAuthenticated, (req, res): void => {
       },
       {
         $project: {
-          password: false,
-          affiliate_id: false
+          password: false
         }
       }
     ])
