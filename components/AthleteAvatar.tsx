@@ -20,7 +20,7 @@ const AthleteAvatar = ({ athlete }: AthleteAvatarProps): React.ReactElement => {
           {`${athlete.first_name} ${athlete.last_name}`}
         </Text>
         <Text size="medium" truncate={true}>
-          {athlete.affiliate.name}
+          {athlete.affiliate}
         </Text>
       </Box>
     </Box>
