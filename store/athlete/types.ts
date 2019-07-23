@@ -1,14 +1,23 @@
 import { Athlete } from '../../db/types';
 
+// Reducer state
 export interface AthleteState {
   profile: Athlete | null;
+  error: string;
 }
 
-export const LOGOUT_ATHLETE = 'LOGOUT_ATHLETE';
+// Action types
+export const UPDATE_ATHLETE_FAILURE = 'UPDATE_ATHLETE_FAILURE';
+export const UPDATE_ATHLETE_SUCCESS = 'UPDATE_ATHLETE_SUCCESS';
 
-interface LogoutAthleteAction {
-  type: typeof LOGOUT_ATHLETE;
-  payload: null;
+interface UpdateAthleteFailure {
+  type: typeof UPDATE_ATHLETE_FAILURE;
+  payload: string;
 }
 
-export type AthleteActionTypes = LogoutAthleteAction;
+interface UpdateAthleteSuccess {
+  type: typeof UPDATE_ATHLETE_SUCCESS;
+  payload: Partial<Athlete>;
+}
+
+export type AthleteActionTypes = UpdateAthleteFailure | UpdateAthleteSuccess;
