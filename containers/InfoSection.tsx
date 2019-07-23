@@ -4,7 +4,7 @@ import { Box, ResponsiveContext } from 'grommet';
 import { AthleteAvatar } from '../components';
 import { AppState } from '../store';
 import { Athlete } from '../db/types';
-import { ActivityBox } from 'containers';
+import { ActivityBox } from '.';
 
 interface InfoSectionProps {
   athlete: Athlete;
