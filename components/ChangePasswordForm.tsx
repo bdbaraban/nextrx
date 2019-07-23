@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { Box, Button, Form, FormField } from 'grommet';
 import { updateAthlete } from '../store/athlete/actions';
+import { AthleteState } from '../store/athlete/types';
 import { AppState } from '../store';
 import { Athlete } from '../db/types';
 import { Popper } from '.';
@@ -20,7 +21,7 @@ interface SettingsFormStateProps {
  * Mapped Redux actions
  */
 interface SettingsFormDispatchProps {
-  handleSubmit: (attributes: UpdateAthleteAttributes) => void;
+  handleSubmit: (attributes: Partial<Athlete>) => void;
 }
 
 /**
