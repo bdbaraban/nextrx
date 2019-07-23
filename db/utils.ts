@@ -11,7 +11,7 @@ export const connectClient = async (
   callback: (err: MongoError) => void
 ): Promise<void> => {
   const user = process.env.MONGODB_USER;
-  const password = process.env.MONGODB_PASSWORD;
+  const password = process.env.MONGODB_PWD;
   const host = process.env.MONGODB_HOST;
   const database = process.env.MONGODB_DB;
 
