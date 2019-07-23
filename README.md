@@ -3,8 +3,8 @@
   A CrossFit workout application for recording and tracking weekly workouts and exercise benchmarks.
 </p>
 <p align="center">
-  <img src="https://github.com/bdbaraban/nextrx/blob/master/assets/ideadog-logo.png"
-       alt="Creative n r x design"
+  <img src="https://github.com/bdbaraban/nextrx/blob/master/assets/nextrx-logo.png"
+       alt="Design combining the letters N, R and X"
   />
 </p>
 
