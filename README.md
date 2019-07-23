@@ -24,12 +24,12 @@ I intend NextRX to be inspiring. With this attractive, intuitive application, yo
 
 NextRX is a full-stack, server-side-rendered Node.js application built on [Next.js](https://nextjs.org/):
 
-- Front-End: [React](https://reactjs.org/) (in [TypeScript](https://www.typescriptlang.org/))
-- State management: [Redux](https://react-redux.js.org/) (with [redux-thunk](https://github.com/reduxjs/redux-thunk))
-- UI: [Grommet](https://v2.grommet.io/)
-- Database: [MongoDB](https://www.mongodb.com/)
-- Web Server: [Express](https://expressjs.com/)
-- Authentication: [Passport](http://www.passportjs.org/)
+- **Front-End**: [React](https://reactjs.org/) (in [TypeScript](https://www.typescriptlang.org/))
+- **State management**: [Redux](https://react-redux.js.org/) (with [redux-thunk](https://github.com/reduxjs/redux-thunk))
+- **UI**: [Grommet](https://v2.grommet.io/)
+- **Database**: [MongoDB](https://www.mongodb.com/)
+- **Web Server**: [Express](https://expressjs.com/)
+- **Authentication**: [Passport](http://www.passportjs.org/)
 
 ## Development :computer:
 
