@@ -20,22 +20,24 @@ const IndexPage: NextPage<{}> = (): React.ReactElement => {
             justify="around"
             align="center"
             background="brand"
+            overflow="auto"
           >
-            <Box direction="column">
-              <Heading a11yTitle="Welcome title" level="1" textAlign="center">
+            <Box direction="column" align="center" justify="center">
+              <Heading level="1" textAlign="center" margin="small">
                 Welcome to NextRX!
               </Heading>
-              <Heading
-                a11yTitle="Welcome subtitle"
-                level="3"
-                textAlign="center"
-              >
-                Sign in or sign up to get started.&nbsp;
-                <Emoji symbol="💪" label="muscle" />
-              </Heading>
-              <Heading level="5" textAlign="center">
-                Or, <Link>view a dummy account.</Link>
-              </Heading>
+              <Box align="center" justify="center">
+                <Heading level="3" textAlign="center" margin="small">
+                  Sign in or sign up to get started.&nbsp;
+                  <Emoji symbol="💪" label="muscle" />
+                </Heading>
+                <Heading level="4" textAlign="center" margin={{ top: 'small' }}>
+                  Or,{' '}
+                  <Link href="/dummy">
+                    <a>view a dummy account.</a>
+                  </Link>
+                </Heading>
+              </Box>
             </Box>
             <Box direction="row">
               <Tabs>
@@ -51,6 +53,15 @@ const IndexPage: NextPage<{}> = (): React.ReactElement => {
                 </Tab>
               </Tabs>
             </Box>
+            <style jsx>{`
+              a {
+                color: #fff;
+              }
+
+              a:hover {
+                opacity: 0.6;
+              }
+            `}</style>
           </Box>
         )}
       </ResponsiveContext.Consumer>
