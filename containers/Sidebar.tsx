@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Button } from 'grommet';
 import { Close, Menu } from 'grommet-icons';
-import { SidebarMenu } from 'components';
+import { SidebarMenu } from '../components';
 
+/**
+ * Layover sidebar menu
+ */
 const Sidebar = (): React.ReactElement => {
   const [open, setOpen] = React.useState<boolean>(false);
 
