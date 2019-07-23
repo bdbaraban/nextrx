@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { connect } from 'react-redux';
 import { Box, Heading, Layer } from 'grommet';
-import { logoutAthlete } from '../store/athlete/actions';
 import { AppState } from '../store';
 import { Athlete } from 'db/types';
 
@@ -30,7 +29,7 @@ const SidebarMenu = ({ toggleOpen }: SidebarMenuProps): React.ReactElement => {
       >
         <Box align="center" margin="large">
           <Heading level="4">Your Account</Heading>
-          <Link href="/athlete/settings">
+          <Link href="/settings">
             <a>Settings</a>
           </Link>
           <Link href="/logout">
@@ -67,9 +66,4 @@ const mapStateToProps = (state: AppState): { athlete: Athlete } => {
   return { athlete: state.athlete.profile };
 };
 
-const mapDispatchToProps = { logoutAthlete };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SidebarMenu);
+export default connect(mapStateToProps)(SidebarMenu);
