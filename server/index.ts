@@ -3,13 +3,10 @@ import { createServer } from 'http';
 import BodyParser from 'body-parser';
 import next from 'next';
 import session from 'express-session';
-import passport from 'passport';
-import LocalStrategy from 'passport-local';
 import uid from 'uid-safe';
 import { connectClient, closeClient } from '../db/utils';
 import api from '../api';
-import authRoutes from './authRoutes';
-import { login } from './utils';
+import { authRoutes, passport } from './authentication';
 
 // Configure Next application
 const app = next({
@@ -46,19 +43,6 @@ connectClient((err): void => {
         })
       );
 
-      // Configure Passport with Auth0 strategy
-      passport.use(
-        new LocalStrategy.Strategy(
-          {
-            usernameField: 'email',
-            passwordField: 'password'
-          },
-          login
-        )
-      );
-      passport.serializeUser((user, done): void => done(null, user));
-      passport.deserializeUser((user, done): void => done(null, user));
-
       // Add Passport
       server.use(passport.initialize());
       server.use(passport.session());
@@ -80,10 +64,11 @@ connectClient((err): void => {
         next();
       };
 
-      // Restrict access on athlete profile page
+      // Restrict access on athlete profile pages
       server.use('/athlete', restrictAccess);
+      server.use('/settings', restrictAccess);
 
-      // Redirect login page to athlete profile is authenticated
+      // Redirect login page to athlete profile if authenticated
       server.get(
         '/',
         (req, res): Promise<void> => {
