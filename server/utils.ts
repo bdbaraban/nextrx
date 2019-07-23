@@ -1,6 +1,8 @@
+import { NextFunction } from 'express';
 import LocalStrategy from 'passport-local';
-import { getDB } from '../db/utils';
 import bcrypt from 'bcrypt';
+import { ObjectID } from 'mongodb';
+import { getDB } from '../db/utils';
 import { Athlete } from '../db/types';
 
 type DoneFunction = (
@@ -9,6 +11,12 @@ type DoneFunction = (
   options?: LocalStrategy.IVerifyOptions
 ) => void;
 
+/**
+ * Attempt to log in an athlete with entered email/password.
+ * @param email - Entered email.
+ * @param password - Entered password.
+ * @param done - Callback.
+ */
 export const login = (
   email: string,
   password: string,
@@ -20,24 +28,10 @@ export const login = (
       { $match: { email } },
       {
         $lookup: {
-          from: 'affiliates',
-          localField: 'affiliate_id',
-          foreignField: '_id',
-          as: 'affiliate'
-        }
-      },
-      { $unwind: '$affiliate' },
-      {
-        $lookup: {
           from: 'workouts',
           localField: '_id',
           foreignField: 'athlete_id',
           as: 'workouts'
-        }
-      },
-      {
-        $project: {
-          affiliate_id: false
         }
       }
     ])
@@ -62,38 +56,109 @@ export const login = (
     );
 };
 
-export const create = (athlete: Athlete, callback): void => {
+interface CreateParams {
+  email: string;
+  password: string;
+}
+
+/**
+ * Create a new athlete.
+ * @param body - Email and password for the new athlete.
+ * @param done - Callback.
+ */
+export const create = (
+  { email, password }: CreateParams,
+  done: DoneFunction
+): void => {
   const BCRYPT_SALT_ROUNDS = 12;
   const collection = getDB().collection('athletes');
 
-  bcrypt
-    .hash(athlete.password, BCRYPT_SALT_ROUNDS)
-    .then(function(hashedPassword): void {
-      athlete.password = hashedPassword;
-      collection.insertOne(athlete, (err, result): void => {
-        if (err) {
-          return callback(err);
+  bcrypt.hash(password, BCRYPT_SALT_ROUNDS).then(
+    async (hashedPassword): Promise<void> => {
+      password = hashedPassword;
+
+      if (await collection.findOne({ email })) {
+        return done(null, false, {
+          message: 'Account with email already exists.'
+        });
+      }
+
+      const created_at = new Date();
+      const last_login = created_at;
+
+      collection.insertOne(
+        {
+          email,
+          password,
+          created_at,
+          last_login,
+          first_name: '',
+          last_name: '',
+          profile_image_url: '',
+          affiliate: '',
+          email_verified: false
+        },
+        async (err, result): Promise<void> => {
+          if (err) {
+            return done(err);
+          }
+
+          if (result.insertedCount !== 1) {
+            return done(null, false, { message: 'Failed to create account.' });
+          }
+
+          const athlete = await collection.findOne({ _id: result.insertedId });
+
+          return done(null, athlete);
         }
-        if (result.insertedCount !== 1) {
-          return callback('Athlete not inserted.');
-        }
-        callback(null);
-      });
-    });
+      );
+    }
+  );
 };
 
-export const verify = (email: string, callback): void => {
+/**
+ * Update an athlete's profile.
+ * @param values - New attributes for the athlete.
+ * @param done - Callback.
+ */
+export const update = (values: Partial<Athlete>, done: DoneFunction): void => {
+  const { _id, ...attributes } = values;
+  const id = new ObjectID(_id);
+  const collection = getDB().collection('athletes');
+
+  collection.updateOne(
+    { _id: id },
+    { $set: attributes },
+    async (err, result): Promise<void> => {
+      if (err) {
+        return done(err);
+      }
+
+      if (result.modifiedCount !== 1) {
+        return done(null, false, { message: 'Failed to update athlete.' });
+      }
+
+      return done(null, true);
+    }
+  );
+};
+
+export const verify = (email: string, next: NextFunction): void => {
   getDB()
     .collection('athletes')
     .updateOne(
       { email },
       { $set: { email_verified: true } },
       (err, result): void => {
-        if (err) return callback(err);
-        if (result.modifiedCount !== 1)
-          return callback('Unable to mark athlete as verified.');
+        if (err) {
+          return next(err);
+        }
 
-        callback(null, true);
+        if (result.modifiedCount !== 1) {
+          return next('Unable to mark athlete as verified.');
+        }
+
+        next(null);
       }
     );
 };
