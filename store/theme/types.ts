@@ -1,8 +1,10 @@
+// Reducer state
 export interface ThemeState {
   type: string;
   object: object;
 }
 
+// Action types
 export const SET_LIGHT = 'SET_LIGHT';
 export const SET_DARK = 'SET_DARK';
 
