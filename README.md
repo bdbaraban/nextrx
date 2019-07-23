@@ -35,9 +35,9 @@ NextRX is a full-stack, server-side-rendered Node.js application built on [Next.
 
 NextRX is a current work-in-progress.
 
-- I am currently: Implementing integrated user account authentication features across Redux, Express and Passport.
-- I next plan to: Finish the profile page UI and implement workout posting features.
-- I eventually would love to: Write a test suite, flesh out the API, and deploy!
+- **I am currently**: Implementing integrated user account authentication features across Redux, Express and Passport.
+- **I next plan to**: Finish the profile page UI and implement workout posting features.
+- **I eventually would love to**: Write a test suite, flesh out the API, and deploy!
 
 ## Acknowledgements :pray:
 
