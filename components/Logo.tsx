@@ -1,13 +1,14 @@
 import React from 'react';
 
 interface LogoProps {
-  size: number;
+  // Width and height of the logo svg
+  size?: number;
 }
 
 /**
  * NextRX logo SVG
  */
-const Logo = ({ size }: LogoProps): React.ReactElement => {
+const Logo = ({ size = 42 }: LogoProps): React.ReactElement => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
