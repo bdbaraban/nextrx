@@ -1,6 +1,9 @@
 import React from 'react';
 import { Box, Text } from 'grommet';
 
+/**
+ * Page footer component.
+ */
 const Footer = (): React.ReactElement => {
   return (
     <Box
@@ -12,7 +15,7 @@ const Footer = (): React.ReactElement => {
       pad={{ left: 'medium', right: 'small', vertical: 'small' }}
       margin={{ top: 'medium' }}
     >
-      <Text margin="none">NextRX</Text>
+      <Text margin="none">Built with Next.js, Grommet, and MongoDB.</Text>
     </Box>
   );
 };
