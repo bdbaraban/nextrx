@@ -1,5 +1,6 @@
 // Components barrel file
 export { default as AthleteAvatar } from './AthleteAvatar';
+export { default as AthleteInfo } from './AthleteInfo';
 export { default as ActivityChart } from './ActivityChart';
 export { default as ChangePasswordForm } from './ChangePasswordForm';
 export { default as Divider } from './Divider';
