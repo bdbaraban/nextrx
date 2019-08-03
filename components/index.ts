@@ -6,6 +6,7 @@ export { default as ChangePasswordForm } from './ChangePasswordForm';
 export { default as Divider } from './Divider';
 export { default as Emoji } from './Emoji';
 export { default as Footer } from './Footer';
+export { default as IconButton } from './IconButton';
 export { default as LoginForm } from './LoginForm';
 export { default as Logo } from './Logo';
 export { default as Popper } from './Popper';
