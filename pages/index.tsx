@@ -2,8 +2,9 @@ import React from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { Box, Heading, Layer, ResponsiveContext, Tab, Tabs } from 'grommet';
+import { Github } from 'grommet-icons';
 import withGrommet from '../lib/withGrommet';
-import { Emoji, LoginForm, SignUpForm } from '../components';
+import { Emoji, IconButton, LoginForm, Logo, SignUpForm } from '../components';
 
 /**
  * Entry point login page.
@@ -11,13 +12,28 @@ import { Emoji, LoginForm, SignUpForm } from '../components';
 const IndexPage: NextPage<{}> = (): React.ReactElement => {
   return (
     <Layer full position="center">
+      <Box
+        tag="header"
+        direction="row"
+        align="center"
+        justify="between"
+        background="brand"
+        pad={{ left: 'medium', right: 'small', vertical: 'small' }}
+      >
+        <Logo size={48} />
+        <IconButton
+          target="_blank"
+          icon={<Github size="large" />}
+          href="https://github.com/bdbaraban/nextrx"
+        />
+      </Box>
       <ResponsiveContext.Consumer>
         {(size: string): React.ReactElement => (
           <Box
             fill
             flex
             direction={size === 'small' ? 'column' : 'row'}
-            justify="around"
+            justify="evenly"
             align="center"
             background="brand"
             overflow="auto"
