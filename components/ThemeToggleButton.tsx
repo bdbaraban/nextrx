@@ -1,28 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { IconButton } from 'grommet-controls';
+import { useSelector, useDispatch } from 'react-redux';
 import { Info } from 'grommet-icons';
-import { ThemeActionTypes, ThemeState } from '../store/theme/types';
+import { ThemeState } from '../store/theme/types';
 import { setDarkTheme, setLightTheme } from '../store/theme/actions';
+import { IconButton } from '../components';
 import { AppState } from '../store';
-import { darkTheme, lightTheme } from '../lib/themes';
 
-interface ThemeToggleButtonProps {
-  theme: ThemeState;
-  setLightTheme: (payload: object) => ThemeActionTypes;
-  setDarkTheme: (payload: object) => ThemeActionTypes;
-}
+/**
+ * Light/dark theme toggler
+ */
+const ThemeToggleButton = (): React.ReactElement => {
+  const theme = useSelector((state: AppState): ThemeState => state.theme);
+  const dispatch = useDispatch();
 
-const ThemeToggleButton = ({
-  theme,
-  setLightTheme,
-  setDarkTheme
-}: ThemeToggleButtonProps): React.ReactElement => {
   const toggleTheme = (): void => {
     if (theme.type === 'dark') {
-      setLightTheme(lightTheme);
+      dispatch(setLightTheme());
     } else {
-      setDarkTheme(darkTheme);
+      dispatch(setDarkTheme());
     }
   };
 
@@ -36,13 +31,4 @@ const ThemeToggleButton = ({
   );
 };
 
-const mapStateToProps = (state: AppState): { theme: ThemeState } => {
-  return { theme: state.theme };
-};
-
-const mapDispatchToProps = { setDarkTheme, setLightTheme };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ThemeToggleButton);
+export default ThemeToggleButton;
