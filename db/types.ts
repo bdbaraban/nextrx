@@ -52,4 +52,5 @@ export interface Athlete {
   last_login: string;
   affiliate: string;
   workouts: Workout[];
+  email_verified: boolean;
 }
