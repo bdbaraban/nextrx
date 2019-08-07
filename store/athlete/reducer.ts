@@ -2,13 +2,15 @@ import {
   AthleteActionTypes,
   AthleteState,
   UPDATE_ATHLETE_FAILURE,
-  UPDATE_ATHLETE_SUCCESS
+  UPDATE_ATHLETE_SUCCESS,
+  UPDATE_PASSWORD_FAILURE,
+  UPDATE_PASSWORD_SUCCESS
 } from './types';
 
 // Initial athlete state
 export const initialAthleteState: AthleteState = {
   profile: null,
-  error: ''
+  status: ''
 };
 
 /**
@@ -24,13 +26,15 @@ const athleteReducer = (
     case UPDATE_ATHLETE_SUCCESS:
       return {
         profile: Object.assign({}, state.profile, action.payload),
-        error: ''
+        status: 'Changes saved!'
       };
 
     case UPDATE_ATHLETE_FAILURE:
+    case UPDATE_PASSWORD_SUCCESS:
+    case UPDATE_PASSWORD_FAILURE:
       return {
         profile: state.profile,
-        error: action.payload
+        status: action.payload as string
       };
 
     default:
