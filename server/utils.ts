@@ -1,4 +1,3 @@
-import { NextFunction } from 'express';
 import LocalStrategy from 'passport-local';
 import bcrypt from 'bcrypt';
 import { ObjectID } from 'mongodb';
@@ -33,7 +32,8 @@ export const login = (
           foreignField: 'athlete_id',
           as: 'workouts'
         }
-      }
+      },
+      { $sort: { workouts: 1 } }
     ])
     .toArray(
       async (err, docs): Promise<void> => {
@@ -56,18 +56,15 @@ export const login = (
     );
 };
 
-interface CreateParams {
-  email: string;
-  password: string;
-}
-
 /**
  * Create a new athlete.
- * @param body - Email and password for the new athlete.
+ * @param email - The new athlete's email.
+ * @param password - The new athlete's password.
  * @param done - Callback.
  */
 export const create = (
-  { email, password }: CreateParams,
+  email: string,
+  password: string,
   done: DoneFunction
 ): void => {
   const BCRYPT_SALT_ROUNDS = 12;
@@ -118,16 +115,19 @@ export const create = (
 
 /**
  * Update an athlete's profile.
+ * @param _id - The athlete's ID.
  * @param values - New attributes for the athlete.
  * @param done - Callback.
  */
-export const update = (values: Partial<Athlete>, done: DoneFunction): void => {
-  const { _id, ...attributes } = values;
-  const id = new ObjectID(_id);
+export const update = (
+  _id: string,
+  attributes: Partial<Athlete>,
+  done: DoneFunction
+): void => {
   const collection = getDB().collection('athletes');
 
   collection.updateOne(
-    { _id: id },
+    { _id: new ObjectID(_id) },
     { $set: attributes },
     async (err, result): Promise<void> => {
       if (err) {
@@ -143,7 +143,12 @@ export const update = (values: Partial<Athlete>, done: DoneFunction): void => {
   );
 };
 
-export const verify = (email: string, next: NextFunction): void => {
+/**
+ * Verify an athlete's email.
+ * @param email - The athlete's email.
+ * @param done - Callback.
+ */
+export const verify = (email: string, done: DoneFunction): void => {
   getDB()
     .collection('athletes')
     .updateOne(
@@ -151,44 +156,53 @@ export const verify = (email: string, next: NextFunction): void => {
       { $set: { email_verified: true } },
       (err, result): void => {
         if (err) {
-          return next(err);
+          return done(err);
         }
 
         if (result.modifiedCount !== 1) {
-          return next('Unable to mark athlete as verified.');
+          return done(null, false, {
+            message: 'Unable to mark athlete as verified.'
+          });
         }
 
-        next(null);
+        done(null, true);
       }
     );
 };
 
+/**
+ * Change an athlete's password.
+ * @param _id - The athlete's ID.
+ * @param newPassword - The athlete's new password.
+ * @param done - Callback.
+ */
 export const changePassword = (
-  email: string,
+  _id: string,
   newPassword: string,
-  callback
+  done: DoneFunction
 ): void => {
   const BCRYPT_SALT_ROUNDS = 12;
+  const collection = getDB().collection('athletes');
 
-  const hashPassword = async (newPassword: string): Promise<void> => {
-    const hashedPassword = await bcrypt.hash(newPassword, BCRYPT_SALT_ROUNDS);
-    getDB()
-      .collection('athletes')
-      .updateOne(
-        { email },
+  bcrypt.hash(newPassword, BCRYPT_SALT_ROUNDS).then(
+    async (hashedPassword): Promise<void> => {
+      collection.updateOne(
+        { _id: new ObjectID(_id) },
         { $set: { password: hashedPassword } },
         (err, result): void => {
           if (err) {
-            return callback(err);
-          }
-          if (result.modifiedCount !== 1) {
-            return callback('Unable to change athlete password.');
+            return done(err);
           }
 
-          callback(null, true);
+          if (result.modifiedCount !== 1) {
+            return done(null, false, {
+              message: 'Unable to change athlete password.'
+            });
+          }
+
+          done(null, true);
         }
       );
-  };
-
-  hashPassword(newPassword);
+    }
+  );
 };
