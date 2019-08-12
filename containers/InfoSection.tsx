@@ -1,11 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Box, ResponsiveContext } from 'grommet';
-import { AthleteAvatar } from '../components';
-import { AppState } from '../store';
 import { Athlete } from '../db/types';
-import { ActivityBox } from '.';
+import { AthleteAvatar, ActivityChart, AthleteInfo } from '../components';
 
+/**
+ * InfoSection container prop types
+ */
 interface InfoSectionProps {
   athlete: Athlete;
 }
@@ -22,20 +22,30 @@ const InfoSection = ({ athlete }: InfoSectionProps): React.ReactElement => {
           direction={size === 'small' ? 'column' : 'row'}
           align="center"
           alignSelf="center"
-          justify="between"
-          width={size === 'small' ? '100%' : '85%'}
-          style={{ minHeight: 'min-content' }}
+          justify="around"
+          height="min-content"
+          width="85%"
         >
-          <AthleteAvatar athlete={athlete} />
-          <ActivityBox size={size} athlete={athlete} />
+          <Box
+            direction="column"
+            gap="medium"
+            margin={size === 'small' ? 'large' : 'small'}
+          >
+            <AthleteAvatar athlete={athlete} />
+            <AthleteInfo athlete={athlete} />
+          </Box>
+          <Box
+            direction="column"
+            align="center"
+            margin={size === 'small' ? 'large' : 'small'}
+            width={size === 'small' ? '100%' : '45%'}
+          >
+            <ActivityChart athlete={athlete} />
+          </Box>
         </Box>
       )}
     </ResponsiveContext.Consumer>
   );
 };
 
-const mapStateToProps = (state: AppState): { athlete: Athlete } => {
-  return { athlete: state.athlete.profile };
-};
-
-export default connect(mapStateToProps)(InfoSection);
+export default InfoSection;
