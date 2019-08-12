@@ -34,6 +34,10 @@ const getMonday = (date: Date): Date => {
  * @param workouts - Array of total athlete workouts.
  */
 const countActiveDays = (workouts: Workout[]): number => {
+  if (workouts.length === 0) {
+    return 0;
+  }
+
   let count = 0;
   const monday = getMonday(new Date());
 
