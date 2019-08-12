@@ -1,7 +1,10 @@
 import React from 'react';
 import { Box, Calendar } from 'grommet';
 
-interface WorkoutCalendarProps {
+/**
+ * WODCalendar component prop types
+ */
+interface WODCalendarProps {
   date: Date;
   size: string;
   handleSelect: (newDate: any) => void;
@@ -10,15 +13,15 @@ interface WorkoutCalendarProps {
 /**
  * Interactive calendar for selecting active workout.
  */
-const WorkoutCalendar = ({
+const WODCalendar = ({
   date,
   size,
   handleSelect
-}: WorkoutCalendarProps): React.ReactElement => {
+}: WODCalendarProps): React.ReactElement => {
   return (
     <Box width={size === 'small' ? '100%' : '50%'} justify="center">
       <Calendar
-        size="small"
+        size="medium"
         alignSelf="center"
         daysOfWeek
         date={date.toISOString()}
@@ -28,4 +31,4 @@ const WorkoutCalendar = ({
   );
 };
 
-export default React.memo(WorkoutCalendar);
+export default React.memo(WODCalendar);
