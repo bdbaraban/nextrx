@@ -22,17 +22,22 @@ export interface Time {
 export interface Load {
   score_type: string;
   lift: string;
-  score: number;
+  scheme: {
+    rounds: string;
+    reps: string;
+  };
+  score: string;
   one_rep_max: boolean;
 }
 
 export interface Other {
   score_type: string;
   description: string;
+  score: string;
   rx: boolean;
 }
 
-export type Movement = Reps | Time | Load | Other;
+export type Movement = Partial<Reps & Time & Load & Other>;
 
 export interface Workout {
   _id: string;
