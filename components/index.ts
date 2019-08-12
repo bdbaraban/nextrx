@@ -1,7 +1,7 @@
 // Components barrel file
+export { default as ActivityChart } from './ActivityChart';
 export { default as AthleteAvatar } from './AthleteAvatar';
 export { default as AthleteInfo } from './AthleteInfo';
-export { default as ActivityChart } from './ActivityChart';
 export { default as ChangePasswordForm } from './ChangePasswordForm';
 export { default as Divider } from './Divider';
 export { default as Emoji } from './Emoji';
@@ -16,5 +16,7 @@ export { default as SidebarMenu } from './SidebarMenu';
 export { default as SignUpForm } from './SignUpForm';
 export { default as ThemeToggleButton } from './ThemeToggleButton';
 export { default as Title } from './Title';
-export { default as WorkoutCalendar } from './WorkoutCalendar';
-export { default as WorkoutCard } from './WorkoutCard';
+export { default as WODCalendar } from './WODCalendar';
+export { default as WODCard } from './WODCard';
+export { default as WODDialog } from './WODDialog';
+export { default as WODForm } from './WODForm';
