@@ -1,19 +1,20 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Box, ResponsiveContext } from 'grommet';
-import { AppState } from '../store';
 import { Athlete } from '../db/types';
-import { WorkoutCalendar, WorkoutCard } from '../components';
+import { WODCalendar, WODCard } from '../components';
 
-interface WorkoutSectionProps {
+/**
+ * WODSection prop types
+ */
+interface WODSectionProps {
   athlete: Athlete;
 }
 
-const WorkoutSection = ({
-  athlete
-}: WorkoutSectionProps): React.ReactElement => {
+const WODSection = ({ athlete }: WODSectionProps): React.ReactElement => {
+  // Current selected date on WODCalender
   const [date, setDate] = React.useState(new Date());
 
+  // Handle WODCalendar date changes
   const handleSelect = (newDate: any): void => {
     setDate(new Date(newDate));
   };
@@ -26,21 +27,17 @@ const WorkoutSection = ({
           direction={size === 'small' ? 'column' : 'row'}
           align="center"
           justify="center"
-          width={size === 'small' ? '100%' : '85%'}
+          width="85%"
           style={{ minHeight: 'min-content' }}
         >
-          <WorkoutCalendar
-            date={date}
-            size={size}
-            handleSelect={handleSelect}
-          />
+          <WODCalendar date={date} size={size} handleSelect={handleSelect} />
           <Box
             width={size === 'small' ? '100%' : '50%'}
             margin={size === 'small' ? { top: 'large' } : {}}
             align="center"
             justify="center"
           >
-            <WorkoutCard athlete={athlete} date={date} />
+            <WODCard athlete={athlete} date={date} />
           </Box>
         </Box>
       )}
@@ -48,8 +45,4 @@ const WorkoutSection = ({
   );
 };
 
-const mapStateToProps = (state: AppState): { athlete: Athlete } => {
-  return { athlete: state.athlete.profile };
-};
-
-export default connect(mapStateToProps)(WorkoutSection);
+export default WODSection;
